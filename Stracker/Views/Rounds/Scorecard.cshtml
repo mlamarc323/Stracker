@@ -1,0 +1,121 @@
+﻿@using System.Collections
+@using System.Web.UI.WebControls
+@using Stracker.Models
+@using Stracker.ViewModel
+@model Stracker.ViewModel.Scorecard
+
+@{
+    ViewBag.Title = "Scorecard";
+}
+
+<h2>Scorecard</h2>
+
+
+@using (Html.BeginForm("PostScorecard", "Rounds", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @*<h4>Round</h4>*@
+        <hr/>
+
+        @Html.HiddenFor(model => model.Round.RoundId)
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.Round.FacilityId, "Facility", htmlAttributes: new { @class = "control-label col-md-2", @style = "float:left; width: 75px" })*@
+            <h2 class="col-md-10">
+                @Html.DisplayTextFor(model => model.Facility.Name) - @Html.DisplayTextFor(model => model.Course.Name)
+            </h2>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.Round.TeeId, "TeeId", htmlAttributes: new {@class = "control-label col-md-2", @style = "float:left; width: 75px"})*@
+            <h3 class="col-md-10">
+                @Html.DisplayTextFor(model => model.Tees[0].Name) (Slope: @Html.DisplayTextFor(model => model.Tees[0].Slope) - Rating: @Html.DisplayTextFor(model => model.Tees[0].Rating))
+            </h3>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.Round.TeeId, "TeeId", htmlAttributes: new {@class = "control-label col-md-2", @style = "float:left; width: 75px"})*@
+            <div class="col-md-10">
+                @Html.DisplayTextFor(model => model.Round.Date)
+            </div>
+        </div>
+        <table id="tblScorecard">
+
+            @*<div style="display: inline-block">*@
+
+            <thead>
+            <tr>
+                
+                <td style="text-align: center">
+                    <u>Num</u>
+                </td>
+
+                <td style="text-align: center">
+                    <u>Ydg</u>
+                </td>
+
+                <td style="text-align: center">
+                    <u>Par</u>
+                </td>
+
+                <td style="text-align: center"><u>HCP</u></td>
+                <td style="text-align: center"><u>Score</u></td>
+                <td style="text-align: center"><u>Putts</u></td>
+                <td style="text-align: center"><u>GIR</u></td>
+                <td style="text-align: center"><u>FIR</u></td>
+            </tr>
+            </thead>
+            
+            @*</div>*@
+
+            @for (var i = 0; i < Model.Holes.Count; i++)
+            {
+                <tbody>
+                <tr>
+                    @Html.HiddenFor(model =>model.Holes[i].HoleId)
+                    <td style="text-align: center"><b>@Html.DisplayTextFor(model => model.Holes[i].Number)</b></td>
+                    <td style="text-align: center">@Html.DisplayTextFor(model => model.Holes[i].Yardage)</td>
+                    <td style="text-align: center">@Html.DisplayTextFor(model => model.Holes[i].Par)</td>
+                    <td style="text-align: center">@Html.DisplayTextFor(model => model.Holes[i].Handicap)</td>
+                    <td style="text-align: center">@Html.TextBoxFor(model => model.Details[i].Score, new {@style = "width:30px"})</td>
+                    <td style="text-align: center">@Html.TextBoxFor(model => model.Details[i].Putts, new {@style = "width:30px"})</td>
+
+                    <td style="text-align: center; width: 40px">@Html.DropDownListFor(model => model.Details[i].GIR, new SelectList(ViewBag.gir as IEnumerable, "Value", "Text"), new {@style = "width:40px"})</td>
+
+                    @if (Model.Holes[i].Par != 3)
+                    {
+                        <td style="text-align: center; width: 40px">@Html.DropDownListFor(model => model.Details[i].FIR, new SelectList(ViewBag.fir as IEnumerable, "Value", "Text"), new {@style = "width:40px"})</td>
+                    }
+                    else
+                    {
+                        <td style="height: 15px">@Html.DropDownList("FIR", new SelectList(ViewBag.fir as IEnumerable), new {@style = "display:none; height: 25px"})</td>
+                    }
+
+
+                </tr>
+                </tbody>
+            }
+
+        </table>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btnPostScore" disabled="true" type="submit" value="Post Score" class="btn btn-default" />
+            </div>
+        </div>
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/js/rounds.js")
+}

@@ -1,0 +1,74 @@
+﻿@model Stracker.Models.Hole
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Hole</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Yardage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Yardage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Par)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Par)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Handicap)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Handicap)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FacilityId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FacilityId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CourseId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tee.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tee.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.HoleId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

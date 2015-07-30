@@ -1,0 +1,66 @@
+﻿@model Stracker.Models.RoundDetail
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>RoundDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.HoleId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HoleId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Score)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Score)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Putts)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Putts)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GIR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GIR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FIR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FIR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Round.RoundId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Round.RoundId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.RoundDetailId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
