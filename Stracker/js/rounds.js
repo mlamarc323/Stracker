@@ -107,5 +107,7 @@ $(function () {
     $("#Date").datepicker();
 
     $("input[id^='Details_']").blur(ValidateScorePopulated);
+
+    //test
     
 });
