@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <script src="~/Scripts/jquery-2.1.4.js"></script>
+    <script src="~/Scripts/jquery-ui-1.11.4.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+
+    <style>
+        body nav ul ul {
+            display: none;
+            position: absolute;
+            text-align: left;
+            width: 100%;
+            background: #000000;
+            border-top: 5px solid #5C87B2;
+            filter: alpha(opacity=80);
+            -moz-opacity: 0.8;
+            -khtml-opacity: 0.8;
+            opacity: 0.8;
+        }
+
+            body nav ul ul li a {
+                line-height: 3.1em;
+            }
+    </style>
+    <script type="text/javascript">
+        $(function() {
+            $("body nav li").each(function() {
+                if ($(this).find("ul").length > 0) {
+
+                    //show subnav on hover
+                    $(this).mouseenter(function() {
+                        $(this).find("ul").stop(true, true).slideDown();
+                    });
+
+                    //hide submenus on exit
+                    $(this).mouseleave(function() {
+                        $(this).find("ul").stop(true, true).slideUp();
+                    });
+
+                    $(this).find("ul").mousemove(function() {
+                        $(this).stop(true, true).show();
+                    });
+                }
+            });
+        });
+    </script>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <header>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
+            </div>
+            <div class="float-right">
+                <section id="login">
+                    @Html.Partial("_LoginPartial")
+                </section>
+                <nav>
+                    <ul id="menu">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>
+                            <a href="#">Scores</a>
+                            <ul>
+                                <li>@Html.ActionLink("Post Score", "Create", "Rounds")</li>
+                                <li>@Html.ActionLink("View All Scores", "Index", "Rounds")</li>
+                                <li><a href="#">Search: Last 20</a></li>
+                                <li><a href="#">Search: Date Range</a></li>
+                                <li><a href="#">Latest</a></li>
+                            </ul>
+                        </li>
+                        @*<li>
+                            <a href="#">Golfers</a>
+                            <ul>
+                                <li>@Html.ActionLink("Add New Golfer", "Create", "Golfers")</li>
+                                <li>@Html.ActionLink("View All Golfers", "Index", "Golfers")</li>
+                                <li>Search: Top 20: Golfers</li>
+                            </ul>
+                        </li>*@
+                        <li>
+                            <a href="#">Facilities</a>
+                            <ul>
+                                <li>@Html.ActionLink("View Facilities", "Index", "Facilities")</li>
+                                <li>@Html.ActionLink("View Courses", "Index", "Courses")</li>
+                                <li>@Html.ActionLink("View Holes", "Index", "Holes")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Search</a>
+                            <ul>
+                                <li>Facility</li>
+                                <ul>
+                                    <li>By Name</li>
+                                    <li>By Zip Code</li>
+                                </ul>
+                                <li>Golfer</li>
+                                <ul>
+                                    <li>By Last Name</li>
+                                    <li>By Zip Code</li>
+                                </ul>
+                                <li>Score</li>
+                                <ul>
+                                    <li>By Date</li>
+                                    <li>By Facility</li>
+                                    <li>By Golfer</li>
+                                </ul>
+                            </ul>
+                        </li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    @*<footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year -Acramal Technologies, Inc.</p>
+                <p>FacilityId: @Session["FacilityId"]</p>
+                <p>FacilityName: @Session["FacilityName"]</p>
+                <p>CourseId: @Session["CourseId"]</p>
+                <p>CourseName: @Session["CourseName"]</p>
+            </div>
+        </div>
+    </footer>*@
+
+    @RenderSection("scripts", required: false)
+    @*<script src="~/js/course.js"></script>
+    <script src="~/js/Round.js"></script>*@
+</body>
+</html>
