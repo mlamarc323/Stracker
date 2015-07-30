@@ -1,0 +1,384 @@
+USE [master]
+GO
+
+/****** Object:  Database [GolfStatTracker]    Script Date: 7/30/2015 11:43:32 AM ******/
+CREATE DATABASE [GolfStatTracker]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'GolfStatTracker', FILENAME = N'C:\Users\mlamarca\GolfStatTracker.mdf' , SIZE = 4096KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'GolfStatTracker_log', FILENAME = N'C:\Users\mlamarca\GolfStatTracker_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+
+ALTER DATABASE [GolfStatTracker] SET COMPATIBILITY_LEVEL = 110
+GO
+
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [GolfStatTracker].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+
+ALTER DATABASE [GolfStatTracker] SET ANSI_NULL_DEFAULT OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET ANSI_NULLS OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET ANSI_PADDING OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET ANSI_WARNINGS OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET ARITHABORT OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET AUTO_CLOSE OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET AUTO_SHRINK OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET AUTO_UPDATE_STATISTICS ON 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET CURSOR_DEFAULT  GLOBAL 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET NUMERIC_ROUNDABORT OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET QUOTED_IDENTIFIER OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET RECURSIVE_TRIGGERS OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET  DISABLE_BROKER 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET TRUSTWORTHY OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET PARAMETERIZATION SIMPLE 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET HONOR_BROKER_PRIORITY OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET RECOVERY SIMPLE 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET  MULTI_USER 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET PAGE_VERIFY CHECKSUM  
+GO
+
+ALTER DATABASE [GolfStatTracker] SET DB_CHAINING OFF 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+
+ALTER DATABASE [GolfStatTracker] SET  READ_WRITE 
+GO
+
+
+
+
+
+
+USE [GolfStatTracker]
+GO
+
+/****** Object:  Table [dbo].[Facilities]    Script Date: 7/30/2015 11:44:17 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[Facilities](
+	[FacilityId] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Facility] PRIMARY KEY CLUSTERED 
+(
+	[FacilityId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+
+
+USE [GolfStatTracker]
+GO
+
+/****** Object:  Table [dbo].[Courses]    Script Date: 7/30/2015 11:44:35 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Courses](
+	[CourseId] [int] IDENTITY(1,1) NOT NULL,
+	[FacilityId] [int] NOT NULL CONSTRAINT [DF_Course_FacilityId]  DEFAULT ((0)),
+	[Name] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Course] PRIMARY KEY CLUSTERED 
+(
+	[CourseId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[Courses]  WITH CHECK ADD  CONSTRAINT [FK_Course_Facility] FOREIGN KEY([FacilityId])
+REFERENCES [dbo].[Facilities] ([FacilityId])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[Courses] CHECK CONSTRAINT [FK_Course_Facility]
+GO
+
+
+
+
+USE [GolfStatTracker]
+GO
+
+/****** Object:  Table [dbo].[Tees]    Script Date: 7/30/2015 11:44:50 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[Tees](
+	[TeeId] [int] IDENTITY(1,1) NOT NULL,
+	[FacilityId] [int] NOT NULL,
+	[CourseId] [int] NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+	[Slope] [tinyint] NULL,
+	[Rating] [decimal](3, 1) NULL,
+	[Yardage] [int] NULL,
+ CONSTRAINT [PK_Tee] PRIMARY KEY CLUSTERED 
+(
+	[TeeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+
+
+USE [GolfStatTracker]
+GO
+
+/****** Object:  Table [dbo].[Holes]    Script Date: 7/30/2015 11:45:10 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Holes](
+	[HoleId] [int] IDENTITY(1,1) NOT NULL,
+	[FacilityId] [int] NOT NULL,
+	[CourseId] [int] NOT NULL,
+	[TeeId] [int] NOT NULL,
+	[Number] [int] NOT NULL,
+	[Yardage] [int] NULL,
+	[Par] [int] NULL,
+	[Handicap] [int] NULL,
+ CONSTRAINT [PK_Hole_1] PRIMARY KEY CLUSTERED 
+(
+	[HoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[Holes]  WITH CHECK ADD  CONSTRAINT [FK_Hole_Tee] FOREIGN KEY([TeeId])
+REFERENCES [dbo].[Tees] ([TeeId])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[Holes] CHECK CONSTRAINT [FK_Hole_Tee]
+GO
+
+
+
+
+USE [GolfStatTracker]
+GO
+
+/****** Object:  Table [dbo].[CoursesTees]    Script Date: 7/30/2015 11:45:23 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[CoursesTees](
+	[CourseId] [int] NOT NULL,
+	[TeeId] [int] NOT NULL,
+ CONSTRAINT [PK_CourseTee] PRIMARY KEY CLUSTERED 
+(
+	[CourseId] ASC,
+	[TeeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[CoursesTees]  WITH CHECK ADD  CONSTRAINT [FK_CoursesTees_Courses] FOREIGN KEY([CourseId])
+REFERENCES [dbo].[Courses] ([CourseId])
+GO
+
+ALTER TABLE [dbo].[CoursesTees] CHECK CONSTRAINT [FK_CoursesTees_Courses]
+GO
+
+ALTER TABLE [dbo].[CoursesTees]  WITH CHECK ADD  CONSTRAINT [FK_CoursesTees_Tees] FOREIGN KEY([TeeId])
+REFERENCES [dbo].[Tees] ([TeeId])
+GO
+
+ALTER TABLE [dbo].[CoursesTees] CHECK CONSTRAINT [FK_CoursesTees_Tees]
+GO
+
+
+
+
+
+
+USE [GolfStatTracker]
+GO
+
+/****** Object:  Table [dbo].[Rounds]    Script Date: 7/30/2015 11:45:40 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Rounds](
+	[RoundId] [int] IDENTITY(1,1) NOT NULL,
+	[FacilityId] [int] NOT NULL CONSTRAINT [DF_Round_FacilityId]  DEFAULT ((0)),
+	[CourseId] [int] NOT NULL,
+	[TeeId] [int] NOT NULL CONSTRAINT [DF_Rounds_TeeId]  DEFAULT ((0)),
+	[Date] [date] NOT NULL,
+	[TotalScore] [int] NOT NULL CONSTRAINT [DF_Rounds_TotalScore]  DEFAULT ((0)),
+ CONSTRAINT [PK_Event] PRIMARY KEY CLUSTERED 
+(
+	[RoundId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+
+
+USE [GolfStatTracker]
+GO
+
+/****** Object:  Table [dbo].[RoundDetails]    Script Date: 7/30/2015 11:46:20 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[RoundDetails](
+	[RoundDetailId] [int] IDENTITY(1,1) NOT NULL,
+	[RoundId] [int] NOT NULL,
+	[HoleId] [int] NOT NULL,
+	[Score] [int] NULL,
+	[Putts] [int] NULL,
+	[GIR] [bit] NULL,
+	[FIR] [bit] NULL,
+ CONSTRAINT [PK_EventDetail] PRIMARY KEY CLUSTERED 
+(
+	[RoundDetailId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[RoundDetails]  WITH CHECK ADD  CONSTRAINT [FK_RoundDetail_Round] FOREIGN KEY([RoundId])
+REFERENCES [dbo].[Rounds] ([RoundId])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[RoundDetails] CHECK CONSTRAINT [FK_RoundDetail_Round]
+GO
+
+
+
+
+USE [GolfStatTracker]
+GO
+
+/****** Object:  Table [dbo].[Golfers]    Script Date: 7/30/2015 11:46:31 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[Golfers](
+	[GolferId] [int] IDENTITY(1,1) NOT NULL,
+	[First_Name] [varbinary](50) NOT NULL,
+	[Last_Name] [int] NOT NULL,
+ CONSTRAINT [PK_Golfer] PRIMARY KEY CLUSTERED 
+(
+	[GolferId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
